@@ -6,8 +6,8 @@ SRC=$(shell ls src | grep -e '\.hs')
 OBJ=$(SRC:hs=o)
 
 	
-Main: $(BUILD)
-	$(CC) -o $@ src/Main.hs
+main: $(BUILD)
+	$(CC) -o Main src/Main.hs
 
 $(BUILD):
 	@echo "SRC=$(SRC)"

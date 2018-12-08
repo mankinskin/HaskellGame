@@ -4,15 +4,11 @@ import Game
 import System.IO
 import Map
 
-step :: Game -> IO ()
-step (Game Quitting _ _) = do return () -- leave gameloop
-step game = do
-                draw game
-                input <- getInput
-                step (processInput game input)
+frameloop :: Game -> IO ()
+frameloop (Game Quitting _ _) = do return () -- leave
+frameloop game = do   -- keep running
+                    draw game
+                    (getInput >>= (processInput . return $game)) >>= frameloop
 
 main :: IO ()
-main = do
-        setEcho False
-        step initGame
-        setEcho True
+main = frameloop initGame
