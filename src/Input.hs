@@ -4,6 +4,7 @@ where
 import System.IO
 import Game
 
+
 ifReadyDo :: Handle -> IO a -> IO (Maybe a)
 ifReadyDo handle func = hReady handle >>= f
   where f True = func >>= return . Just
@@ -15,11 +16,13 @@ quitCharacters :: [String]
 quitCharacters = ["q", ":Q", ":q","quit","exit"]
 
 getInput :: IO (Maybe Input)
-getInput = (stdin `ifReadyDo` getLine)
+getInput = getLine >>= return . Just --(stdin `ifReadyDo` getLine)
 
 processInput :: Game -> Maybe Input -> Game
 processInput game Nothing = game
 processInput game (Just input)
-                      | input `elem` quitCharacters = let (_, str) = game in (False, str)
+                      | input `elem` quitCharacters = Game Quitting (screen game) (time game)
                       | otherwise = game
 
+setEcho :: Bool -> IO()
+setEcho b = hSetEcho stdin b
