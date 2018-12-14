@@ -9,13 +9,13 @@ type Path = [MapVec2] -- List of Vecs
 data Map a = Map (Array MapVec2 a)
 
 instance (Show a) => Show (Map a) where
-  show (Map arr) = foldr (++) "" (lines sizey)
+  show (Map arr) = foldr (++) "" (lines sy)
     where
-      (_, (sizex, sizey)) = bounds arr
+      (sx, sy) = snd.bounds $arr
       lines 0 = []
-      lines y = (foldr (++) "\n" (line (sizey-y) sizex)):(lines (y-1))
+      lines yi = (foldr (++) "\n" (line (sy-yi) sx)):lines (yi-1)
       line _ 0 = []
-      line y x = show (arr!((sizex-x), y)):(line y (x-1))
+      line yi xi = show (arr!(sx-xi, yi)):(line yi (xi-1))
 
 
 makeMap :: MapVec2 -> a -> (Map a)
