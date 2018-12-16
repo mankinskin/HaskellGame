@@ -1,6 +1,6 @@
 module Location where
 
-import Map
+import Array2D
 
 data Location = Unpassable | Room
 data Wall = Wall | Path
@@ -18,14 +18,14 @@ instance Show Visit  where
   show (Visited) = " "
   show (Unvisited) = "*"
 
-visitPath :: (Map Visit) -> Path -> (Map Visit)
-visitPath vmap path = markPath vmap path (cycle [Visited])
+visitPath :: (Array2D Visit) -> Path -> (Array2D Visit)
+visitPath varr2D path = markPath varr2D path (cycle [Visited])
 
-visit :: (Map Visit) -> MapVec2 -> (Map Visit)
-visit vmap pos = markPos vmap pos Visited
+visit :: (Array2D Visit) -> IntVec2 -> (Array2D Visit)
+visit varr2D pos = markPos varr2D pos Visited
 
-breakWalls :: (Map Wall) -> Path -> (Map Wall)
-breakWalls wmap path = markPath wmap path (cycle [Path])
+breakWalls :: (Array2D Wall) -> Path -> (Array2D Wall)
+breakWalls warr2D path = markPath warr2D path (cycle [Path])
 
-breakWall :: (Map Wall) -> MapVec2 -> (Map Wall)
-breakWall wmap pos = markPos wmap pos Path
+breakWall :: (Array2D Wall) -> IntVec2 -> (Array2D Wall)
+breakWall warr2D pos = markPos warr2D pos Path

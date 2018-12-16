@@ -2,7 +2,7 @@ module Main where
 import Input
 import Game
 import System.IO
-import Map
+import Array2D
 
 frameloop :: Game -> IO ()
 frameloop (Game Quitting _ _) = do return () -- leave
