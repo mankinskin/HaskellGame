@@ -1,8 +1,10 @@
 module Main where
+
+import Time
 import Input
 import Game
+
 import System.IO
-import Array2D
 
 frameloop :: Game -> IO ()
 frameloop (Game Quitting _ _) = do return () -- leave
@@ -11,4 +13,6 @@ frameloop game = do   -- keep running
                     (getInput >>= (processInput . return $game)) >>= frameloop
 
 main :: IO ()
-main = frameloop initGame
+main = do
+          starttime <- timeSinceEpoch
+          frameloop (initGame (10, 10) starttime)

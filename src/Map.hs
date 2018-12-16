@@ -64,13 +64,13 @@ type Cell = IntVec2
 type Trace = Path
 type MoveOptions = Path
 
-genMap :: (Int, Int) -> Int -> Map
+genMap :: (Int, Int) -> Integer -> Map
 -- generate a random Map
 genMap size seed =
   fst.walk maze [start] $gen
     where
       m = makeMap size
-      (start, gen) = randomPos m (mkStdGen seed)
+      (start, gen) = randomPos m (mkStdGen (fromInteger seed))
       maze = Map (wallarr m) (visit (visitarr m) start)
 
 randomPos :: (RandomGen g) => Map -> g -> (Cell, g)

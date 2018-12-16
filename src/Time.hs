@@ -1,10 +1,9 @@
 module Time where
 
 
-import Data.Word
 import Data.Time.Clock.POSIX
 
-type Milliseconds = Word64
+type Milliseconds = Integer
 
 timeSinceEpoch :: IO (Milliseconds)
 timeSinceEpoch = round `fmap` getPOSIXTime
