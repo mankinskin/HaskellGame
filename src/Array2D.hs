@@ -1,6 +1,7 @@
 module Array2D where
 
 import Data.Array
+import System.Random
 
 type IntVec2 = (Int, Int) -- Vec in a Array2D
 type Path = [IntVec2] -- List of Vecs
@@ -45,4 +46,13 @@ neighborsWith :: (Array2D a) -> IntVec2 -> (a->Bool) -> [IntVec2]
 neighborsWith m (px,py) f = [np | np <- [(px+mx,py+my)|(mx,my) <- ds],
                                 inBounds m np && f (arr m!np)]
                               where
-                                ds = [(x,y) | x <- [(-1),0,1], y <- [(-1),0,1]]
+                                ds = [(x,y) | x <- [(-1),1], y <- [(-1),1]]
+
+randomPos :: (RandomGen g) => (Array2D a) -> g -> (IntVec2, g)
+-- picks a random position
+randomPos (Array2D a) gen =
+  ((x, y), ygen)
+    where
+      (lower, range) = bounds a
+      (x, xgen) = randomR (fst lower, fst range) gen
+      (y, ygen) = randomR (snd lower, snd range) xgen
