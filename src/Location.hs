@@ -2,17 +2,13 @@ module Location where
 
 import Array2D
 
-data Location = Unpassable | Room
-data Wall = Wall | Path
+data Location = Wall | Room | Path deriving (Eq)
 data Visit = Visited | Unvisited deriving (Eq)
 
 instance Show Location  where
-  show (Unpassable) = "//"
-  show (Room) = " "
-
-instance Show Wall  where
   show (Wall) = "#"
-  show (Path) = " "
+  show (Room) = " "
+  show (Path) = "."
 
 instance Show Visit  where
   show (Visited) = " "
@@ -24,8 +20,8 @@ visitPath varr2D path = markList varr2D path (cycle [Visited])
 visit :: (Array2D Visit) -> IntVec2 -> (Array2D Visit)
 visit varr2D pos = mark varr2D pos Visited
 
-breakWalls :: (Array2D Wall) -> Path -> (Array2D Wall)
-breakWalls warr2D path = markList warr2D path (cycle [Path])
+markPath :: (Array2D Location) -> Path -> (Array2D Location)
+markPath warr2D path = markList warr2D path (cycle [Path])
 
-breakWall :: (Array2D Wall) -> IntVec2 -> (Array2D Wall)
-breakWall warr2D pos = mark warr2D pos Path
+markRoom :: (Array2D Location) -> IntVec2 -> (Array2D Location)
+markRoom warr2D pos = mark warr2D pos Room
