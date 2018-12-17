@@ -32,3 +32,17 @@ markList (Array2D arr) ps vals = Array2D (arr//updates)
 mark :: (Array2D a) -> IntVec2 -> a -> (Array2D a)
 -- sets values of given positions in Array2D
 mark arr2D p val = markList arr2D [p] [val]
+
+isAt :: (Eq a) => IntVec2 -> (Array2D a) -> a -> Bool
+isAt pos m a = (arr m)!pos == a
+
+inBounds :: (Array2D a) -> IntVec2 -> Bool
+inBounds m (x, y) = (x0 <= x) && (x <= sx) && (y0 <= y) && (y <= sy)
+                      where
+                        ((x0, y0),(sx, sy)) = bounds . arr $m
+
+neighborsWith :: (Array2D a) -> IntVec2 -> (a->Bool) -> [IntVec2]
+neighborsWith m (px,py) f = [np | np <- [(px+mx,py+my)|(mx,my) <- ds],
+                                inBounds m np && f (arr m!np)]
+                              where
+                                ds = [(x,y) | x <- [(-1),0,1], y <- [(-1),0,1]]
