@@ -3,7 +3,7 @@ where
 
 import Time
 import Map
-import MapGen
+import MazeGen
 import Array2D
 
 data GameState = Quitting | Running deriving (Show)
@@ -21,7 +21,7 @@ updateTime game =
 
 initGame :: IntVec2 -> Integer -> Game
 initGame size seed =
-    Game Running (genMap size seed) (GameTime 0 0)
+    Game Running (genMaze size seed) (GameTime 0 0)
 
 update :: Game -> IO()
 update g = updateTime g >>= draw

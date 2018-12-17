@@ -7,36 +7,25 @@ import Array2D
 
 import Location
 
-type Map = Array2D Location
+data Map = Map (Array2D Location)
 
 makeMap :: IntVec2 -> Map
 makeMap (sx, sy) =
-  makeArray2D (sx, sy) Wall
+  Map (makeArray2D (sx, sy) Wall)
 
 
---instance Show Map where
---  show map =
---    lines
---      where
---        (_, (sx, sy)) = bounds map
---
---        lines = topborder ++"\n"++ show Wall ++ line sx sy
---          where topborder = concat.take ((sx+1)*2+1) $(cycle [show $Wall])
---
---        at xi yi = (sx-xi, sy-yi)
---
---        line xi yi =
---           show (map!at xi yi) ++ next xi
---            where
---                  next 0 = "\n"++show Wall ++line sx (yi-1)
---                  next nxi = mapline (nxi-1) yi
---
---        --wallline xi yi =
---        --  wall ++ show Wall ++ next xi yi
---        --    where
---        --          wall = show (walls!vwall xi yi)
---        --          next 0 0 = "\n"
---        --          next nxi 0 = wallline (nxi-1) 0
---        --          next 0 nyi = "\n"++show Wall++mapline sx (nyi-1)
---        --          next nxi nyi= wallline (nxi-1) nyi
---
+instance Show Map where
+  show (Map (Array2D marr)) = lines
+      where
+        (_, (sx, sy)) = bounds marr
+
+        hborder = (concat.take (sx+1+2) $(cycle [show $Wall])) ++"\n"
+        lines = foldr (++) hborder (hborder:map line [sy,sy-1..0])
+
+        at xi yi = show (marr!(sx-xi, sy-yi))
+
+        line yi = show Wall ++ tile sx yi ++ show Wall ++ "\n"
+
+        tile 0 yi= at 0 yi
+        tile xi yi = at xi yi ++ tile (xi-1) yi
+
