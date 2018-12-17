@@ -12,7 +12,7 @@ instance Show Location  where
 
 instance Show Wall  where
   show (Wall) = "#"
-  show (Path) = "."
+  show (Path) = " "
 
 instance Show Visit  where
   show (Visited) = " "
