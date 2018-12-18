@@ -5,11 +5,12 @@ import Time
 import Map
 import MazeGen
 import Array2D
-import Location
+import World
+import Player
 
 data GameState = Quitting | Running deriving (Show)
 
-data Game = Game { state::GameState, world::(Map Location), time::GameTime }
+data Game = Game { state::GameState, world::World, time::GameTime }
 
 data GameTime = GameTime { start::Milliseconds, duration::Milliseconds }
 
@@ -22,7 +23,7 @@ updateTime game =
 
 initGame :: IntVec2 -> Integer -> Game
 initGame size seed =
-    Game Running (genMaze size seed) (GameTime 0 0)
+    Game Running (World (genMaze size seed) (Player (0, 0))) (GameTime 0 0)
 
 update :: Game -> IO()
 update g = updateTime g >>= draw
