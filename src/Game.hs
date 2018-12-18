@@ -5,10 +5,11 @@ import Time
 import Map
 import MazeGen
 import Array2D
+import Location
 
 data GameState = Quitting | Running deriving (Show)
 
-data Game = Game { state::GameState, world::Map, time::GameTime }
+data Game = Game { state::GameState, world::(Map Location), time::GameTime }
 
 data GameTime = GameTime { start::Milliseconds, duration::Milliseconds }
 

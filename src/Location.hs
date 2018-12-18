@@ -1,18 +1,27 @@
 module Location where
 
+import Data.Array
 import Array2D
+import Render
 
 data Location = Wall | Room | Path deriving (Eq)
 data Visit = Visited | Unvisited deriving (Eq)
 
 instance Show Location  where
-  show (Wall) = "#"
-  show (Room) = " "
-  show (Path) = "."
+  show Wall = "#"
+  show Room = " "
+  show Path = "."
+
+instance PixelType Location where
+  pixel Wall = Pixel '#'
+  pixel Room = Pixel ' '
+  pixel Path = Pixel '.'
 
 instance Show Visit  where
   show (Visited) = " "
   show (Unvisited) = "*"
+
+instance Render Location where
 
 visitPath :: (Array2D Visit) -> Path -> (Array2D Visit)
 visitPath varr2D path = markList varr2D path (cycle [Visited])

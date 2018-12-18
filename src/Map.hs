@@ -5,27 +5,26 @@ import System.IO
 import Data.Array
 import Array2D
 
-import Location
+data Map a = Map {arr2D::Array2D a}
 
-data Map = Map (Array2D Location)
+makeMap :: IntVec2 -> a -> (Map a)
+makeMap (sx, sy) a =
+  Map (makeArray2D (sx, sy) a)
 
-makeMap :: IntVec2 -> Map
-makeMap (sx, sy) =
-  Map (makeArray2D (sx, sy) Wall)
+data Border = Border
 
+instance Show Border where
+  show b = "#"
 
-instance Show Map where
-  show (Map (Array2D marr)) = lines
+instance (Show a) => Show (Map a) where
+  show (Map marr) = lines
       where
-        (_, (sx, sy)) = bounds marr
-
-        hborder = (concat.take (sx+1+2) $(cycle [show $Wall])) ++"\n"
-        lines = foldr (++) hborder (hborder:map line [sy,sy-1..0])
-
-        at xi yi = show (marr!(sx-xi, sy-yi))
-
-        line yi = show Wall ++ tile sx yi ++ show Wall ++ "\n"
-
-        tile 0 yi= at 0 yi
-        tile xi yi = at xi yi ++ tile (xi-1) yi
+        (_, (sx, sy)) = bounds.arr $marr
+        hborder = (concat.take (sx+1+2) $(cycle [show Border])) ++ "\n"
+        lines = withBorders (show marr)
+        withBorders str = hborder ++ show Border ++ vborder str ++ hborder
+        vborder [] = []
+        vborder ('\n':[]) = show Border ++ "\n"
+        vborder ('\n':cs) = show Border ++ "\n" ++ show Border ++ vborder cs
+        vborder (c:cs) = c:vborder cs
 

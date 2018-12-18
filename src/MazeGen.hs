@@ -15,8 +15,8 @@ type MoveOptions = Path
 -- MazeGen, used during Maze generation
 -- Stores resulting Map and an Array2D
 -- keeping track of the tiles visited
-type Maze = Map
-type MazeGen = (Map, Array2D Visit)
+type Maze = Map Location
+type MazeGen = (Maze, Array2D Visit)
 
 -- generate a random Maze Map
 -- uses a simple depth first search algorithm:
@@ -37,7 +37,7 @@ genMaze :: (Int, Int) -> Integer -> Maze
 -- start Maze generation using a size and a RNG seed
 genMaze size seed = mmap
     where
-      (Map marr) = makeMap size
+      (Map marr) = makeMap size Wall
       varr = makeArray2D size Unvisited
       (start, gen) = randomPos marr (mkStdGen (fromInteger seed))
       mazegen = (Map (mark marr start Room), mark varr start Visited)

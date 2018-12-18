@@ -14,16 +14,23 @@ instance (Show a) => Show (Array2D a) where
     where
       (sx, sy) = snd.bounds $arr
       lines 0 = line sy sx
-      lines yi = line (sy-yi) sx++lines (yi-1)
+      lines yi = line (sy-yi) sx ++ lines (yi-1)
       line yi 0 = show (arr!(sx-0, yi)) ++ "\n"
       line yi xi = show (arr!(sx-xi, yi)) ++ (line yi (xi-1))
 
+--instance (Render a) => Render (Array2D a) where
+--  render (Map (Array2D marr)) = accumarray bnds
+--      where
+--        bnds = bounds marr
+--        (_, (sx, sy)) = bnds
+--        line yi = tile sx yi
+--        tile 0 yi = render (marr!(sx, sy-yi))
+--        tile xi yi = render (marr!(sx-xi, sy-yi)):tile (xi-1) yi
 
 makeArray2D :: IntVec2 -> a -> (Array2D a)
 -- Creates a Array2D of a given size and with given initial value
 makeArray2D (sx, sy) zro = Array2D (listArray ((0, 0), (sx-1, sy-1)) arr)
  where arr = take ((sx)*(sy)).cycle $[zro]
-
 
 markList :: (Array2D a) -> Path -> [a] -> (Array2D a)
 -- sets values of given positions in Array2D
