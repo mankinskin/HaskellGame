@@ -84,10 +84,12 @@ options (Map marr, varr) pos = [move | move <- moves, isSuitable move]
                               dst =(px+mx, py+my)
       nearUnvisited (px,py) =
           -- each tile has a max of 8 neighbors
-          -- one is always already visited (the current position
-          length (neighborsWith varr (px,py) (==Visited)) < 2
+          -- one is always already visited (the current position)
+          -- tile can have max 2 neighbors visited to be suitable
+          -- eg 1 in addition to the current tile (trace head)
+          length (neighborsWith varr (px,py) (==Visited)) < 3
 
-selectRandom :: RandomGen g => [a] -> g -> a
+selectRandom :: (RandomGen g) => [a] -> g -> a
 -- select a random element from a list using a RandomGen
 selectRandom list gen = list!!(fst (randomR (0,(length list)-1) gen))
 

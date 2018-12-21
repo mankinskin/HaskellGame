@@ -56,7 +56,7 @@ neighborsWith :: (Array2D a) -> IntVec2 -> (a->Bool) -> [IntVec2]
 neighborsWith m (px,py) f = [np | np <- [(px+mx,py+my)|(mx,my) <- ds],
                                 inBounds m np && f (arr m!np)]
                               where
-                                ds = [(x,y) | x <- [(-1),1], y <- [(-1),1]]
+                                ds = [(x,y) | x <- [(-1),0,1], y <- [(-1),0,1]]
 
 randomPos :: (RandomGen g) => (Array2D a) -> g -> (IntVec2, g)
 -- picks a random position
