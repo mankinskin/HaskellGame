@@ -2,9 +2,11 @@ module Input
 where
 
 import Game
+import World
 
 import System.IO
 import Data.List
+import Direction
 
 
 ifReadyDo :: Handle -> IO a -> IO (Maybe a)
@@ -24,7 +26,20 @@ processInput :: IO Game -> Maybe Input -> IO Game
 processInput game Nothing = game
 processInput game (Just input)
                       | input `elem` quitCommands = game >>= return . quitGame
+                      | input `elem` dirStrings = game >>= return . (processMove input)
                       | otherwise = printHelp >> game
+
+processMove :: Input -> Game -> Game
+processMove input game
+  | input == dirStrings!!0 =
+    Game (state game) (move (world game) North) (time game)
+  | input == dirStrings!!1 =
+    Game (state game) (move (world game) East) (time game)
+  | input == dirStrings!!2 =
+    Game (state game) (move (world game) South) (time game)
+  | input == dirStrings!!3 =
+    Game (state game) (move (world game) West) (time game)
+  | otherwise = game
 
 setEcho :: Bool -> IO()
 setEcho b = hSetEcho stdin b
