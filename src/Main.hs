@@ -15,4 +15,4 @@ frameloop game = do   -- keep running
 main :: IO ()
 main = do
           starttime <- timeSinceEpoch
-          frameloop (initGame (30, 10) starttime)
+          frameloop (initGame (15, 5) starttime)

@@ -9,9 +9,10 @@ import Map
 instance Render Pixel where
 instance Render Char where
 
-type Screen = Map Pixel
 
 data Pixel = Pixel Char
+
+type Screen = Map Pixel
 
 class PixelType a where
   pixel :: a -> Pixel
@@ -38,12 +39,10 @@ class (PixelType a) => Render a where
       srcs = [(i, pixel a) | (i,a) <- assocs.arr $src]
 
   renderAt :: Screen -> (Array2D a) -> IntVec2 -> Screen
-  -- renders an Array2D of Show on an Array2D of Chars
+  -- renders an Array2D of PixelType on an Array2D of Chars
   renderAt dst src (px, py) = render dst updated
     where
       (b0, b1) = bounds.arr $src
-      transform (x,y) = (x+px, y+py)
+      transform (x,y) = (x+px,y+py)
       offset = (transform b0,transform b1)
       updated = Array2D (ixmap offset transform (arr src))
-
-
