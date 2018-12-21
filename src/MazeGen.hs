@@ -76,8 +76,8 @@ options (Map marr, varr) pos = [move | move <- moves, isSuitable move]
     where
       (_, (sx, sy)) = bounds.arr $marr
       moves = [(1, 0), (0,1), ((-1), 0), (0,(-1))]
-      isSuitable move = inBounds marr dst &&
-                        isAt dst marr Wall && nearUnvisited dst
+      isSuitable move = isAt marr dst Wall &&
+                        nearUnvisited dst
                             where
                               (mx, my) = move
                               (px, py) = pos
