@@ -3,7 +3,6 @@ where
 
 import Time
 import Map
-import MazeGen
 import Array2D
 import World
 import Player
@@ -23,7 +22,7 @@ updateTime game =
 
 initGame :: IntVec2 -> Integer -> Game
 initGame size seed =
-    Game Running (World (genMaze size seed) (Player (0, 0))) (GameTime 0 0)
+    Game Running (genWorld size seed) (GameTime 0 0)
 
 update :: Game -> IO()
 update g = updateTime g >>= draw

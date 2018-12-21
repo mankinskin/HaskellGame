@@ -33,9 +33,10 @@ type MazeGen = (Maze, Array2D Visit)
 -- walk the trace back until moves are possible
 -- repeat until back at starting position
 
-genMaze :: (Int, Int) -> Integer -> Maze
+genMaze :: (Int, Int) -> Integer -> (Maze, IntVec2)
 -- start Maze generation using a size and a RNG seed
-genMaze size seed = mmap
+-- returns a random Maze and the starting position
+genMaze size seed = (mmap, start)
     where
       (Map marr) = makeMap size Wall
       varr = makeArray2D size Unvisited
@@ -84,7 +85,7 @@ options (Map marr, varr) pos = [move | move <- moves, isSuitable move]
       nearUnvisited (px,py) =
           -- each tile has a max of 8 neighbors
           -- one is always already visited (the current position
-          length (neighborsWith varr (px,py) (==Visited)) <= 1
+          length (neighborsWith varr (px,py) (==Visited)) < 2
 
 selectRandom :: RandomGen g => [a] -> g -> a
 -- select a random element from a list using a RandomGen

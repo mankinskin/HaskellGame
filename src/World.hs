@@ -5,6 +5,7 @@ import Map
 import Player
 import Render
 import Location
+import MazeGen
 
 
 import Data.Array
@@ -17,3 +18,7 @@ instance Show World where
     where player = Array2D (listArray (pos p, pos p) [pixel p])
 
 
+genWorld :: IntVec2 -> Integer -> World
+genWorld size seed = World maze (Player start)
+  where
+    (maze, start) = genMaze size seed
