@@ -7,6 +7,9 @@ import Array2D
 import World
 import Player
 
+quitCmds :: [String]
+quitCmds = ["q", ":Q", ":q","quit","exit"]
+
 data GameState = Quitting | Running deriving (Show)
 
 data Game = Game { state::GameState, world::World, time::GameTime }
@@ -21,8 +24,8 @@ updateTime game =
       where startMS = start.time $game
 
 initGame :: IntVec2 -> Integer -> Game
-initGame size seed =
-    Game Running (genWorld size seed) (GameTime 0 0)
+initGame size time =
+    Game Running (genWorld size time) (GameTime time 0)
 
 update :: Game -> IO()
 update g = updateTime g >>= draw

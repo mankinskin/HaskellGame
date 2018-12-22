@@ -3,10 +3,10 @@ where
 
 import Game
 import World
+import Direction
 
 import System.IO
-import Data.List
-import Direction
+import Text.Read
 
 
 ifReadyDo :: Handle -> IO a -> IO (Maybe a)
@@ -16,40 +16,27 @@ ifReadyDo handle func = hReady handle >>= f
 
 type Input = String
 
-quitCmds :: [String]
-quitCmds = ["q", ":Q", ":q","quit","exit"]
-
 getInput :: IO (Maybe Input)
 getInput = getLine >>= return . Just --(stdin `ifReadyDo` getLine)--
-
-processInput :: IO Game -> Maybe Input -> IO Game
-processInput game Nothing = game
-processInput game (Just input)
-                      | input `elem` quitCmds = game >>= return . quitGame
-                      | input `elem` moveCmds = game >>= return . (processMove input)
-                      | otherwise = printHelp >> game
-
-processWorld :: Input -> World -> World
-processWorld input w
-  | input == moveCmds!!0 = move w North
-  | input == moveCmds!!1 = move w East
-  | input == moveCmds!!2 = move w South
-  | input == moveCmds!!3 = move w West
-  | otherwise = w
-
-processMove :: Input -> Game -> Game
-processMove input game =
-  Game (state game) (processWorld input (world game)) (time game)
 
 setEcho :: Bool -> IO()
 setEcho b = hSetEcho stdin b
 
-printHelp :: IO()
-printHelp = putStrLn .foldr (++) " to quit.\n" $("Type ":list)
-  where
-    list = foldr (:) ("or ":[last quitCmds]) $merged
-    merged = concat . transpose $[take tosep quitCmds, seperators]
-    tosep = length quitCmds-2
-    seperators = take tosep.cycle $[", "]
+readOrDefault :: Int -> IO (Int)
+readOrDefault def =
+            do
+              str <- getLine
+              case str of
+                      "" -> return def
+                      _ -> do
+                            tryval <- tryReadInt str
+                            case tryval of
+                              Nothing -> readOrDefault def
+                              (Just a) -> return a
 
+tryReadInt :: String -> IO (Maybe Int)
+tryReadInt str = case (readEither str :: (Either String Int)) of
+                  Left e -> do  putStrLn.show$e
+                                return Nothing
+                  Right a -> return (Just a)
 
