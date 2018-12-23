@@ -1,23 +1,24 @@
 module Direction where
 
 import Array2D
+import Input
 
 data Direction = North | East | South | West deriving Show
 
-northCmds :: [String]
-northCmds = ["north", "up", "w"]
+northCmd :: Input
+northCmd = 'w'
 
-eastCmds :: [String]
-eastCmds = ["east", "right", "d"]
+eastCmd :: Input
+eastCmd = 'd'
 
-southCmds :: [String]
-southCmds = ["south", "down", "s"]
+southCmd :: Input
+southCmd = 's'
 
-westCmds :: [String]
-westCmds = ["west", "left", "a"]
+westCmd :: Input
+westCmd = 'a'
 
-moveCmds :: [String]
-moveCmds = northCmds ++ eastCmds ++ southCmds ++ westCmds
+moveCmds :: [Input]
+moveCmds = [northCmd,eastCmd,southCmd,westCmd]
 
 dir2Vec :: Direction -> IntVec2
 dir2Vec North = (0,1)
