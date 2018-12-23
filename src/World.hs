@@ -11,11 +11,12 @@ import Direction
 
 import Data.Array
 import Array2D
+import System.Random
 
 data World = World (Map Location) Player
 
 instance Show World where
-  show (World (Map marr) p) = show (render (makeScreen marr) player)
+  show (World (Map lm) p) = show (render (makeScreen lm) player)
     where player = Array2D (listArray (pos p, pos p) [pixel p])
 
 
@@ -30,7 +31,7 @@ move w@(World m (Player (px,py))) dir
 isPassable :: World -> IntVec2 -> Bool
 isPassable (World (Map marr) _) pos = isAt marr pos Room
 
-genWorld :: IntVec2 -> Integer -> World
+genWorld :: IntVec2 -> StdGen -> World
 genWorld size seed = World maze (Player start)
   where
     (maze, start) = genMaze size seed

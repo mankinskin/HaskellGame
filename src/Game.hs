@@ -6,9 +6,10 @@ import Map
 import Array2D
 import World
 import Player
+import System.Random
 
 quitCmds :: [String]
-quitCmds = ["q", ":Q", ":q","quit","exit"]
+quitCmds = ["q", ":q","quit","exit"]
 
 data GameState = Quitting | Running deriving (Show)
 
@@ -25,7 +26,7 @@ updateTime game =
 
 initGame :: IntVec2 -> Integer -> Game
 initGame size time =
-    Game Running (genWorld size time) (GameTime time 0)
+    Game Running (genWorld size (mkStdGen.fromInteger$time)) (GameTime time 0)
 
 update :: Game -> IO()
 update g = updateTime g >>= draw

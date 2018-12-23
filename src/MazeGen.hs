@@ -3,9 +3,9 @@ where
 
 import System.Random
 import Data.Array
+
 import Array2D
 import Map
-
 import Location
 
 type Tile = IntVec2
@@ -33,19 +33,19 @@ type MazeGen = (Maze, Array2D Visit)
 -- walk the trace back until moves are possible
 -- repeat until back at starting position
 
-genMaze :: (Int, Int) -> Integer -> (Maze, IntVec2)
+genMaze :: (Int, Int) -> StdGen -> (Maze, IntVec2)
 -- start Maze generation using a size and a RNG seed
 -- returns a random Maze and the starting position
 genMaze size seed = (mmap, start)
     where
       (Map marr) = makeMap size Wall
       varr = makeArray2D size Unvisited
-      (start, gen) = randomPos marr (mkStdGen (fromInteger seed))
+      (start, gen) = randomPos marr seed
       mazegen = (Map (mark marr start Room), mark varr start Visited)
       ((mmap, _),_) = genstep (mazegen, [start]) gen
 
 
-genstep :: RandomGen g => (MazeGen, Trace) -> g -> (MazeGen, Trace)
+genstep :: (MazeGen, Trace) -> StdGen -> (MazeGen, Trace)
 -- recursive generation step
 -- finds possible moves and calls makeMove
 genstep (maze, []) _ = (maze, []) -- trace empty, stop generation
@@ -55,7 +55,7 @@ genstep (maze, (pos:trace)) gen = genstep newmaze newgen
       ops = options maze pos -- options to move to
       (_, newgen) = next gen
 
-makeMove :: (RandomGen g) => (MazeGen, Trace) -> MoveOptions -> g -> (MazeGen, Trace)
+makeMove :: (MazeGen, Trace) -> MoveOptions -> StdGen -> (MazeGen, Trace)
 -- decides whether to backtrace if no tile is suitable
 -- or go to the next suitable tile
 makeMove (maze, (pos:trace)) [] _ = (maze, trace) -- backtrace
@@ -89,7 +89,7 @@ options (Map marr, varr) pos = [move | move <- moves, isSuitable move]
           -- eg 1 in addition to the current tile (trace head)
           length (neighborsWith varr (px,py) (==Visited)) < 3
 
-selectRandom :: (RandomGen g) => [a] -> g -> a
+selectRandom :: [a] -> StdGen -> a
 -- select a random element from a list using a RandomGen
 selectRandom list gen = list!!(fst (randomR (0,(length list)-1) gen))
 

@@ -4,20 +4,20 @@ import Array2D
 
 data Direction = North | East | South | West deriving Show
 
---northCmds :: [String]
---northCmds = ["North", "north", "Up","up"]
---
---eastCmds :: [String]
---eastCmds = ["East", "east", "Right","right"]
---
---southCmds :: [String]
---southCmds = ["South", "south", "Down","down"]
---
---westCmds :: [String]
---westCmds = ["West", "west", "Left", "left"]
+northCmds :: [String]
+northCmds = ["north", "up", "w"]
+
+eastCmds :: [String]
+eastCmds = ["east", "right", "d"]
+
+southCmds :: [String]
+southCmds = ["south", "down", "s"]
+
+westCmds :: [String]
+westCmds = ["west", "left", "a"]
 
 moveCmds :: [String]
-moveCmds = ["North","East","South","West"]
+moveCmds = northCmds ++ eastCmds ++ southCmds ++ westCmds
 
 dir2Vec :: Direction -> IntVec2
 dir2Vec North = (0,1)
