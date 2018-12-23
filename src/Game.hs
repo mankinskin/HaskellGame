@@ -11,6 +11,7 @@ import Input
 import Direction
 import Data.List
 import Text.Printf
+import Item
 
 quitCmd :: Input
 quitCmd = 'q'
@@ -34,7 +35,7 @@ initGame size time =
 
 update :: IO Game -> (Maybe Input) -> IO Game
 update g Nothing = g >>= updateTime
-update g (Just i) = (g >>= updateTime >>= processInput i) >>= draw
+update g (Just i) = (g >>= updateTime >>= processInput i)
 
 draw :: Game -> IO Game
 draw g = do
@@ -45,9 +46,10 @@ quitGame :: Game -> Game
 quitGame (Game _ s t) = Game Quitting s t
 
 processInput :: Input -> Game -> IO Game
-processInput input game
+processInput input game@(Game st w t)
         | input == quitCmd = return . quitGame $game
-        | input `elem` moveCmds = return (processWorld input game)
+        | input `elem` moveCmds = draw (Game st (processMove input w) t)
+        | input == actionCmd = draw (Game st (World.interact w) t)
         | otherwise = printHelp >> return game
 
 processMove :: Input -> World -> World
@@ -58,10 +60,6 @@ processMove input w
   | input == westCmd = move w West
   | otherwise = w
 
-processWorld :: Input -> Game -> Game
-processWorld input game =
-  Game (state game) (processMove input (world game)) (time game)
-
 printHelp :: IO()
 printHelp = do
               printf "Usage:\n"
@@ -70,4 +68,5 @@ printHelp = do
               printf "%c - move right\n" eastCmd
               printf "%c - move down\n" southCmd
               printf "%c - move left\n" westCmd
+              printf "%c - pick up item\n" actionCmd
               printf "Type anything else to show help\n"

@@ -3,8 +3,9 @@ where
 
 import Array2D
 import Render
+import Item
 
-data Player = Player {pos::IntVec2}
+data Player = Player {pos::IntVec2, inventory::Inventory}
 
 instance Show Player where
   show p = "@"

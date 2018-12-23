@@ -17,8 +17,8 @@ printIntro = do
                 putStrLn ""
 
 
-defaultWidth = 15 :: Int
-defaultHeight = 5 :: Int
+defaultWidth = 25 :: Int
+defaultHeight = 10 :: Int
 
 askSize :: IO (IntVec2)
 askSize = do

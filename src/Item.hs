@@ -5,12 +5,16 @@ import Location
 import Map
 import Array2D
 import Render
+import Input
 
 import System.Random
 import Data.List
 import Data.Array
 
 data Item = None | Rock | Key deriving Eq
+
+actionCmd :: Input
+actionCmd = 'f'
 
 instance PixelType Item where
   pixel None = pixel Room
@@ -28,8 +32,8 @@ instance Render Item where
 
 type Inventory = [(Item, Int)]
 
-putItemInInventory :: Item -> Inventory -> Inventory
-putItemInInventory it inv = doToItemCount (+1) it inv
+addItemInInventory :: Item -> Inventory -> Inventory
+addItemInInventory it inv = doToItemCount (+1) it inv
 
 removeItemInInventory :: Item -> Inventory -> Inventory
 removeItemInInventory it inv = doToItemCount ((-) 1) it inv
@@ -67,3 +71,10 @@ randomItem sd
       noneprob = 60
       totprob = keyprob + rockprob + noneprob
 
+pickupItem :: (Map Item) -> IntVec2 -> Inventory -> (Map Item,Inventory)
+pickupItem (Map im) pos inv = (Map nim, ninv)
+  where
+    item = (arr im)!pos
+    size = snd.bounds.arr$im
+    nim = Array2D ((arr im)//[(pos, None)])
+    ninv = addItemInInventory item inv
