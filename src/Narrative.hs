@@ -12,7 +12,8 @@ import Data.List -- for transpose
 
 printIntro :: IO()
 printIntro = do
-                putStrLn "###### Maze Game ######"
+                putStrLn "###### Rock Collector ######"
+                putStrLn "Pickup all the rocks!"
                 printHelp
                 putStrLn ""
 

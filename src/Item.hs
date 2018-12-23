@@ -11,10 +11,13 @@ import System.Random
 import Data.List
 import Data.Array
 
-data Item = None | Rock | Key deriving Eq
+data Item = None | Rock | Key deriving (Eq, Show)
 
 actionCmd :: Input
 actionCmd = 'f'
+
+inventoryCmd :: Input
+inventoryCmd = 'i'
 
 instance PixelType Item where
   pixel None = pixel Room

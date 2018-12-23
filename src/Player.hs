@@ -12,3 +12,11 @@ instance Show Player where
 
 instance PixelType Player where
   pixel p = Pixel '@'
+
+printInventory :: Player -> IO()
+printInventory (Player _ []) = putStrLn "Your inventory is empty."
+printInventory (Player _ inv) = putStr ("You have:\n"++entries inv)
+                where
+                  entries [] = ""
+                  entries (e:es) = entry e ++ "\n" ++ entries es
+                  entry (i,cnt) = show cnt ++ "x "++ show i

@@ -50,6 +50,7 @@ processInput input game@(Game st w t)
         | input == quitCmd = return . quitGame $game
         | input `elem` moveCmds = draw (Game st (processMove input w) t)
         | input == actionCmd = draw (Game st (World.interact w) t)
+        | input == inventoryCmd = (printInventory.player$w) >> return game
         | otherwise = printHelp >> return game
 
 processMove :: Input -> World -> World
@@ -63,10 +64,11 @@ processMove input w
 printHelp :: IO()
 printHelp = do
               printf "Usage:\n"
-              printf "%c - quit\n" quitCmd
-              printf "%c - move up\n" northCmd
-              printf "%c - move right\n" eastCmd
-              printf "%c - move down\n" southCmd
-              printf "%c - move left\n" westCmd
-              printf "%c - pick up item\n" actionCmd
-              printf "Type anything else to show help\n"
+              printf "\t%c - quit\n" quitCmd
+              printf "\t%c - move up\n" northCmd
+              printf "\t%c - move right\n" eastCmd
+              printf "\t%c - move down\n" southCmd
+              printf "\t%c - move left\n" westCmd
+              printf "\t%c - pick up item\n" actionCmd
+              printf "\t%c - show inventory\n" inventoryCmd
+              printf "\tType anything else to show help\n"
