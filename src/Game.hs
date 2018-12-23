@@ -64,8 +64,10 @@ processWorld input game =
 
 printHelp :: IO()
 printHelp = do
+              printf "Usage:\n"
               printf "%c - quit\n" quitCmd
               printf "%c - move up\n" northCmd
               printf "%c - move right\n" eastCmd
               printf "%c - move down\n" southCmd
               printf "%c - move left\n" westCmd
+              printf "Type anything else to show help\n"
