@@ -1,5 +1,5 @@
 # HaskellGame
-A terminal adventure game written in haskell as a university project
+A terminal maze game written in haskell as a university project
 
 # How to build
 ```sh
